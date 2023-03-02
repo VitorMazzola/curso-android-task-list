@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TaskList</string>
+    <string name="btn_add">ADD</string>
+</resources>
