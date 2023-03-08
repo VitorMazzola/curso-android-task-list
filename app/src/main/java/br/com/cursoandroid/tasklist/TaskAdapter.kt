@@ -3,6 +3,7 @@ package br.com.cursoandroid.tasklist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -34,14 +35,21 @@ class TaskAdapter(
         notifyDataSetChanged()
     }
 
+    fun deleteTask(task: Task) {
+        taskList.remove(task)
+        notifyDataSetChanged()
+    }
+
     // View Holder para controlar e manipular os itens da sua lista
     inner class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bind(task: Task, itemPosition: Int) {
             val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
+            val btnDelete = itemView.findViewById<ImageView>(R.id.ivDelete)
+
             tvDescription.text = task.description
 
-            itemView.setOnClickListener {
-                listener.onTaskClicked(task, itemPosition)
+            btnDelete.setOnClickListener {
+                listener.onTaskDeleteClicked(task)
             }
         }
     }

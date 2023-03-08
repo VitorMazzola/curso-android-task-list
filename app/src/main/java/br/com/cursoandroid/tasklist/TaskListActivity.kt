@@ -64,17 +64,21 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     // Implementação do método da interface TaskListener implementada
     override fun onTaskClicked(task: Task, position: Int) {
-        showDialog(task, position)
+        showDialog(task)
+    }
+
+    override fun onTaskDeleteClicked(task: Task) {
+        showDialog(task)
     }
 
     // Método para criar um Alert Dialog
-    private fun showDialog(task: Task, position: Int) {
+    private fun showDialog(task: Task) {
         AlertDialog.Builder(this)
             .setTitle(task.description)
             .setMessage("Deseja remover este item?")
             .setPositiveButton("Sim", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-                    // Implementar lógica para remover item da lista
+                    adapter?.deleteTask(task)
                 }
             })
             .setNegativeButton("Cancelar", null)
