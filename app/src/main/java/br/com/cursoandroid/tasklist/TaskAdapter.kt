@@ -1,11 +1,10 @@
 package br.com.cursoandroid.tasklist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import br.com.cursoandroid.tasklist.databinding.ItemTaskListBinding
 
 class TaskAdapter(
     val listener: TaskListener
@@ -15,8 +14,13 @@ class TaskAdapter(
 
     // Inflar nosso layout e criar nosso ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task_list, parent, false)
-        return TaskViewHolder(view)
+        val binding: ItemTaskListBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_task_list,
+            parent,
+            false
+        )
+        return TaskViewHolder(binding)
     }
 
     // Retorna o tamanho da lista
@@ -41,14 +45,14 @@ class TaskAdapter(
     }
 
     // View Holder para controlar e manipular os itens da sua lista
-    inner class TaskViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    inner class TaskViewHolder(val binding: ItemTaskListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task, itemPosition: Int) {
-            val tvDescription = itemView.findViewById<TextView>(R.id.tvDescription)
-            val btnDelete = itemView.findViewById<ImageView>(R.id.ivDelete)
 
-            tvDescription.text = task.description
+            binding.apply {
+                taskDescription = task.description
+            }
 
-            btnDelete.setOnClickListener {
+            binding.ivDelete.setOnClickListener {
                 listener.onTaskDeleteClicked(task)
             }
         }
