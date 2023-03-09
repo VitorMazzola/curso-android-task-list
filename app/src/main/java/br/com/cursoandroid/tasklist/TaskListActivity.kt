@@ -1,7 +1,10 @@
 package br.com.cursoandroid.tasklist
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -21,34 +24,15 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_task_list)
 
-        configureListeners()
-        configureRecyclerView()
-    }
-
-    // Método para setar os eventos dos componentes
-    private fun configureListeners() {
-
-        // Esse evento retorna o estado do componente (se foi ou nao digitado algo)
-        binding.etTask.addTextChangedListener {
-            binding.isButtonEnabled = it != null && it.isNotBlank()  //Checa se o editText tem ou nao texto e valor e cria as regras de exeção
-            if(it == null || it.isBlank())
-                binding.errorMessage = "Campo obrigatorio"
-        }
-
-        // Esse evento é para capturar o clique no componente
-        binding.btAdd.setOnClickListener {
-            // Capturar texto digitado mo editText
-            val description = binding.etTask.text.toString()
-            // Instancia o objeto
-            val task = Task(description)
-            // Atualiza o adapter com o objeto necessário da função addTask
-            adapter?.addTask(task)
+        val taskList = intent.extras?.getSerializable(LIST_ARGS) as? ArrayList<Task>
+        taskList?.let {
+            configureRecyclerView(it)
         }
     }
 
     // Método para instanciar seu adapter e configurar seu recyclerView (Lista)
-    private fun configureRecyclerView() {
-        adapter = TaskAdapter(this) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
+    private fun configureRecyclerView(taskList: MutableList<Task>) {
+        adapter = TaskAdapter(taskList,this) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
         binding.recyclerTasks.adapter = adapter
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
     }
@@ -74,5 +58,16 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
             })
             .setNegativeButton("Cancelar", null)
             .show()
+    }
+
+    companion object {
+        const val LIST_ARGS = "listArgs"
+        fun startActivity(context: Context, taskList: MutableList<Task>) {
+            val intent = Intent(context, TaskListActivity::class.java)
+            intent.putExtras(Bundle().apply {
+                putSerializable(LIST_ARGS, ArrayList(taskList))
+            })
+            context.startActivity(intent)
+        }
     }
 }

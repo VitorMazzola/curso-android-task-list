@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.cursoandroid.tasklist.databinding.ItemTaskListBinding
 
 class TaskAdapter(
+    val taskList: MutableList<Task>,
     val listener: TaskListener
 ): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
-
-    private var taskList = mutableListOf<Task>()
 
     // Inflar nosso layout e criar nosso ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -31,12 +30,6 @@ class TaskAdapter(
     // Chama seu ViewHolder passando os parametros definidos
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.bind(taskList[position], position)
-    }
-
-    // Função para adicionar itens a lista e atualizar seu adapter
-    fun addTask(task: Task) {
-        taskList.add(task)
-        notifyDataSetChanged()
     }
 
     fun deleteTask(task: Task) {

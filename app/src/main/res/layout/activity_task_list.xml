@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable
-            name="isButtonEnabled"
-            type="Boolean" />
-
-        <variable
-            name="errorMessage"
-            type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,35 +8,12 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etTask"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_start_edit_text"
-            android:layout_marginEnd="@dimen/size_24"
-            android:layout_marginTop="@dimen/size_32"
-            app:error="@{errorMessage}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btAdd"/>
-
-        <Button
-            android:id="@+id/btAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_add"
-            android:enabled="@{isButtonEnabled}"
-            android:layout_marginEnd="@dimen/size_24"
-            app:layout_constraintTop_toTopOf="@id/etTask"
-            app:layout_constraintBottom_toBottomOf="@id/etTask"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTasks"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/size_32"
-            app:layout_constraintTop_toBottomOf="@id/etTask"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
