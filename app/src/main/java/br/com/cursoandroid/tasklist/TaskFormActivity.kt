@@ -1,6 +1,5 @@
 package br.com.cursoandroid.tasklist
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,12 +19,14 @@ class TaskFormActivity: AppCompatActivity() {
             // Verificar os campos e adicionar na lista
             val taskTitle = binding.etTaskTitle.text.toString()
             val taskDescription = binding.etTaskDescription.text.toString()
+            val taskOwner = binding.etTaskOwner.text.toString()
 
             if(taskTitle.isNotBlank()) {
-                val task = Task(taskTitle, taskDescription)
+                val task = Task(taskTitle, taskDescription, taskOwner)
                 taskList.add(task)
                 Toast.makeText(this, "Tarefa adicionada", Toast.LENGTH_SHORT).show()
                 binding.etTaskTitle.text?.clear()
+                binding.etTaskOwner.text?.clear()
                 binding.etTaskDescription.text?.clear()
                 binding.etTaskTitle.requestFocus()
             } else {

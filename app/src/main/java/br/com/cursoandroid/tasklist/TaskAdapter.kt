@@ -42,7 +42,9 @@ class TaskAdapter(
         fun bind(task: Task, itemPosition: Int) {
 
             binding.apply {
+                taskTitle = task.title
                 taskDescription = task.description
+                taskOwner = task.owner
             }
 
             binding.ivDelete.setOnClickListener {

@@ -2,7 +2,15 @@
 <layout>
     <data>
         <variable
+            name="taskTitle"
+            type="String" />
+
+        <variable
             name="taskDescription"
+            type="String" />
+
+        <variable
+            name="taskOwner"
             type="String" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,11 +21,11 @@
         xmlns:tools="http://schemas.android.com/tools">
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{taskDescription}"
-            tools:text="Trabalhar"
+            android:text="@{taskTitle}"
+            tools:text="Titulo"
             android:maxLines="1"
             android:ellipsize="end"
             android:textStyle="bold"
@@ -27,6 +35,41 @@
             android:layout_marginTop="@dimen/margin_top_task_list"
             android:textSize="@dimen/font_18"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{taskDescription}"
+            tools:text="Descricao"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:layout_marginStart="@dimen/size_24"
+            android:layout_marginEnd="@dimen/size_24"
+            android:layout_marginTop="@dimen/minimum_top"
+            android:textSize="@dimen/font_14"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
+
+        <TextView
+            android:id="@+id/tvOwner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{taskOwner}"
+            tools:text="Dono task"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/size_24"
+            android:layout_marginEnd="@dimen/size_24"
+            android:layout_marginTop="@dimen/minimum_top"
+            android:textSize="@dimen/font_14"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
 
@@ -46,7 +89,7 @@
             android:layout_height="1dp"
             android:background="@color/black"
             android:layout_marginTop="@dimen/margin_top_task_list"
-            app:layout_constraintTop_toBottomOf="@id/tvDescription"/>
+            app:layout_constraintTop_toBottomOf="@id/tvOwner"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
