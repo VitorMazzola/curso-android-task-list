@@ -19,12 +19,16 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
     // Declarar binding da view
     private lateinit var binding: ActivityTaskListBinding
 
+    private var taskDatabase: TaskDatabase? = null
+
     // Metodo do ciclo de vida da activity (onde é criado e setado o layout definido)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_task_list)
 
-        val taskList = intent.extras?.getSerializable(LIST_ARGS) as? ArrayList<Task>
+        taskDatabase = TaskDatabase.getDatabaseInstance(this)
+
+        val taskList = taskDatabase?.taskDao()?.getAllTasks()
         taskList?.let {
             configureRecyclerView(it)
         }
@@ -62,11 +66,8 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     companion object {
         const val LIST_ARGS = "listArgs"
-        fun startActivity(context: Context, taskList: MutableList<Task>) {
+        fun startActivity(context: Context) {
             val intent = Intent(context, TaskListActivity::class.java)
-            intent.putExtras(Bundle().apply {
-                putSerializable(LIST_ARGS, ArrayList(taskList))
-            })
             context.startActivity(intent)
         }
     }
