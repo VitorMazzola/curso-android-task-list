@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.cursoandroid.tasklist.databinding.ActivityTaskListBinding
@@ -65,7 +63,6 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
     }
 
     companion object {
-        const val LIST_ARGS = "listArgs"
         fun startActivity(context: Context) {
             val intent = Intent(context, TaskListActivity::class.java)
             context.startActivity(intent)
