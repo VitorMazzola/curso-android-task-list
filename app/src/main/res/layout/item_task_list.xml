@@ -12,13 +12,33 @@
         <variable
             name="taskOwner"
             type="String" />
+
+        <variable
+            name="isChecked"
+            type="Boolean" />
+
+        <variable
+            name="background"
+            type="Integer" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerView"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@{background}"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_edit_text"
+            android:checked="@{isChecked}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -35,7 +55,7 @@
             android:layout_marginTop="@dimen/margin_top_task_list"
             android:textSize="@dimen/font_18"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkBox"
             app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
 
         <TextView
@@ -52,7 +72,7 @@
             android:layout_marginTop="@dimen/minimum_top"
             android:textSize="@dimen/font_14"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkBox"
             app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
 
         <TextView
@@ -70,7 +90,7 @@
             android:layout_marginTop="@dimen/minimum_top"
             android:textSize="@dimen/font_14"
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkBox"
             app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
 
         <ImageView

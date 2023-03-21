@@ -10,6 +10,9 @@ interface TaskDao {
     @Delete
     fun delete(task: Task)
 
+    @Update
+    fun update(task: Task)
+
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): MutableList<Task>
 }

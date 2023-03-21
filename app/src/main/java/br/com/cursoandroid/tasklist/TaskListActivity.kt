@@ -34,7 +34,7 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     // Método para instanciar seu adapter e configurar seu recyclerView (Lista)
     private fun configureRecyclerView(taskList: MutableList<Task>) {
-        adapter = TaskAdapter(taskList,this) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
+        adapter = TaskAdapter(this, taskList,this) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
         binding.recyclerTasks.adapter = adapter
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
     }
@@ -48,6 +48,12 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
         showDialog(task)
     }
 
+    override fun onCheckboxClicked(task: Task, isChecked: Boolean) {
+        task.isChecked = isChecked
+        taskDatabase?.taskDao()?.update(task)
+        adapter?.updateTask()
+    }
+
     // Método para criar um Alert Dialog
     private fun showDialog(task: Task) {
         AlertDialog.Builder(this)
@@ -56,6 +62,7 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
             .setPositiveButton("Sim", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
                     adapter?.deleteTask(task)
+                    taskDatabase?.taskDao()?.delete(task)
                 }
             })
             .setNegativeButton("Cancelar", null)
