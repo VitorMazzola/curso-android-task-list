@@ -1,14 +1,24 @@
-package br.com.cursoandroid.tasklist
+package br.com.cursoandroid.tasklist.presentation
 
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.cursoandroid.tasklist.*
 import br.com.cursoandroid.tasklist.databinding.ActivityTaskListBinding
+import br.com.cursoandroid.tasklist.localData.TaskDatabase
+import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.remoteData.ApiService
+import br.com.cursoandroid.tasklist.remoteData.IApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TaskListActivity: AppCompatActivity(), TaskListener {
 
@@ -24,8 +34,51 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_task_list)
 
-        taskDatabase = TaskDatabase.getDatabaseInstance(this)
+        val isFromApi = intent.extras?.getBoolean(IS_FROM_API) ?: false
 
+        if(isFromApi) {
+            getTasksFromApi()
+        } else {
+            getTasksFromLocalDatabase()
+        }
+
+    }
+
+    private fun getTasksFromApi() {
+        val apiService = ApiService.getService().create(IApi::class.java)
+        val callGetTasks = apiService.getTasks()
+
+        binding.isLoading = View.VISIBLE
+        callGetTasks.enqueue(object : Callback<List<Task>> {
+            override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
+                when(response.code()) {
+                    in 200..202 -> {
+                        val task = response.body()
+                        task?.let {
+                            configureRecyclerView(it.toMutableList())
+                        }
+                    }
+                    204 -> {
+                        Toast.makeText(this@TaskListActivity, "Lista Vazia", Toast.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        Toast.makeText(this@TaskListActivity, "Falha no servidor", Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                binding.isLoading = View.GONE
+            }
+
+            override fun onFailure(call: Call<List<Task>>, t: Throwable) {
+                Toast.makeText(this@TaskListActivity, "Falha no servidor", Toast.LENGTH_LONG).show()
+                binding.isLoading = View.GONE
+            }
+
+        })
+    }
+
+    private fun getTasksFromLocalDatabase() {
+        taskDatabase = TaskDatabase.getDatabaseInstance(this)
         val taskList = taskDatabase?.taskDao()?.getAllTasks()
         taskList?.let {
             configureRecyclerView(it)
@@ -70,8 +123,10 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
     }
 
     companion object {
-        fun startActivity(context: Context) {
+        const val IS_FROM_API = "isFromApiArgs"
+        fun startActivity(context: Context, isFromApi: Boolean = false) {
             val intent = Intent(context, TaskListActivity::class.java)
+            intent.putExtra(IS_FROM_API, isFromApi)
             context.startActivity(intent)
         }
     }

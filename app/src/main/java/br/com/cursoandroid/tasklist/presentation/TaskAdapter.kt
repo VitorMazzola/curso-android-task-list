@@ -1,4 +1,4 @@
-package br.com.cursoandroid.tasklist
+package br.com.cursoandroid.tasklist.presentation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import br.com.cursoandroid.tasklist.R
 import br.com.cursoandroid.tasklist.databinding.ItemTaskListBinding
+import br.com.cursoandroid.tasklist.model.Task
 
 class TaskAdapter(
     val context: Context,
@@ -53,7 +55,9 @@ class TaskAdapter(
                 taskDescription = task.description
                 taskOwner = task.owner
                 isChecked = task.isChecked
-                background = if(task.isChecked) ContextCompat.getColor(context, R.color.teal_700) else ContextCompat.getColor(context, R.color.white)
+                background = if(task.isChecked) ContextCompat.getColor(context, R.color.teal_700) else ContextCompat.getColor(context,
+                    R.color.white
+                )
             }
 
             binding.checkBox.setOnCheckedChangeListener { _, isChecked ->

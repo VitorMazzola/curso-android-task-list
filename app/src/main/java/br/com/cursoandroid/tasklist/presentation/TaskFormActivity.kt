@@ -1,9 +1,12 @@
-package br.com.cursoandroid.tasklist
+package br.com.cursoandroid.tasklist.presentation
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import br.com.cursoandroid.tasklist.R
+import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.localData.TaskDatabase
 import br.com.cursoandroid.tasklist.databinding.ActivityTaskFormBinding
 
 class TaskFormActivity: AppCompatActivity() {
@@ -37,6 +40,10 @@ class TaskFormActivity: AppCompatActivity() {
         binding.btShowTasks.setOnClickListener {
             // Passar lista de task para a tela de listagem
             TaskListActivity.startActivity(this)
+        }
+
+        binding.btShowTasksRemote.setOnClickListener {
+            TaskListActivity.startActivity(this, true)
         }
 
     }

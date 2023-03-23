@@ -1,4 +1,4 @@
-package br.com.cursoandroid.tasklist
+package br.com.cursoandroid.tasklist.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
