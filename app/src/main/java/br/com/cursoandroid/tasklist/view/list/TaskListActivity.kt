@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -21,10 +20,6 @@ import br.com.cursoandroid.tasklist.model.repository.RepositoryLocal
 import br.com.cursoandroid.tasklist.model.repository.RepositoryRemote
 import br.com.cursoandroid.tasklist.remoteData.ApiService
 import br.com.cursoandroid.tasklist.remoteData.IApi
-import br.com.cursoandroid.tasklist.view.form.TaskFormViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TaskListActivity: AppCompatActivity(), TaskListener {
 
