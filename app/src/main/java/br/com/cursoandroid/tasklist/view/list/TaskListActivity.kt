@@ -1,4 +1,4 @@
-package br.com.cursoandroid.tasklist.presentation
+package br.com.cursoandroid.tasklist.view.list
 
 import android.content.Context
 import android.content.DialogInterface
@@ -8,14 +8,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.cursoandroid.tasklist.*
 import br.com.cursoandroid.tasklist.databinding.ActivityTaskListBinding
 import br.com.cursoandroid.tasklist.localData.TaskDatabase
-import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.model.dataclass.Task
+import br.com.cursoandroid.tasklist.model.repository.RepositoryLocal
+import br.com.cursoandroid.tasklist.model.repository.RepositoryRemote
 import br.com.cursoandroid.tasklist.remoteData.ApiService
 import br.com.cursoandroid.tasklist.remoteData.IApi
+import br.com.cursoandroid.tasklist.view.form.TaskFormViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,6 +33,8 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
     // Declarar binding da view
     private lateinit var binding: ActivityTaskListBinding
 
+    private lateinit var viewModel: TaskListViewModel
+
     private var taskDatabase: TaskDatabase? = null
 
     // Metodo do ciclo de vida da activity (onde é criado e setado o layout definido)
@@ -34,54 +42,41 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_task_list)
 
+        viewModel = ViewModelProvider(this, object: ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return TaskListViewModel(
+                    repositoryLocal =  RepositoryLocal(TaskDatabase.getDatabaseInstance(this@TaskListActivity)),
+                    repositoryRemote = RepositoryRemote(ApiService.getService().create(IApi::class.java))
+                ) as T
+            }
+        })[TaskListViewModel::class.java]
+
         val isFromApi = intent.extras?.getBoolean(IS_FROM_API) ?: false
 
-        if(isFromApi) {
-            getTasksFromApi()
-        } else {
-            getTasksFromLocalDatabase()
+        viewModel.getTasks(isFromApi)
+
+        configureObservables()
+    }
+
+    private fun configureObservables() {
+        viewModel.isLoading.observe(this) { isLoading ->
+            binding.loading.isVisible = isLoading
         }
 
-    }
-
-    private fun getTasksFromApi() {
-        val apiService = ApiService.getService().create(IApi::class.java)
-        val callGetTasks = apiService.getTasks()
-
-        binding.isLoading = View.VISIBLE
-        callGetTasks.enqueue(object : Callback<List<Task>> {
-            override fun onResponse(call: Call<List<Task>>, response: Response<List<Task>>) {
-                when(response.code()) {
-                    in 200..202 -> {
-                        val task = response.body()
-                        task?.let {
-                            configureRecyclerView(it.toMutableList())
-                        }
-                    }
-                    204 -> {
-                        Toast.makeText(this@TaskListActivity, "Lista Vazia", Toast.LENGTH_LONG).show()
-                    }
-                    else -> {
-                        Toast.makeText(this@TaskListActivity, "Falha no servidor", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-                binding.isLoading = View.GONE
+        viewModel.taskListLocal.observe(this) { tasks ->
+            tasks?.let {
+                configureRecyclerView(tasks.toMutableList())
             }
+        }
 
-            override fun onFailure(call: Call<List<Task>>, t: Throwable) {
-                Toast.makeText(this@TaskListActivity, "Falha no servidor", Toast.LENGTH_LONG).show()
-                binding.isLoading = View.GONE
+        viewModel.taskListRemote.observe(this) { taskRemote ->
+            taskRemote?.let {
+                configureRecyclerView(it.toMutableList())
             }
+        }
 
-        })
-    }
-
-    private fun getTasksFromLocalDatabase() {
-        taskDatabase = TaskDatabase.getDatabaseInstance(this)
-        val taskList = taskDatabase?.taskDao()?.getAllTasks()
-        taskList?.let {
-            configureRecyclerView(it)
+        viewModel.taskListRemoteError.observe(this) {
+            Toast.makeText(this, "Erro de servidor", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -103,7 +98,7 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     override fun onCheckboxClicked(task: Task, isChecked: Boolean) {
         task.isChecked = isChecked
-        taskDatabase?.taskDao()?.update(task)
+        viewModel.deleteTask(task)
         adapter?.updateTask()
     }
 

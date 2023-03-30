@@ -1,4 +1,4 @@
-package br.com.cursoandroid.tasklist.presentation
+package br.com.cursoandroid.tasklist.view.list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import br.com.cursoandroid.tasklist.R
 import br.com.cursoandroid.tasklist.databinding.ItemTaskListBinding
-import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.model.dataclass.Task
 
 class TaskAdapter(
     val context: Context,

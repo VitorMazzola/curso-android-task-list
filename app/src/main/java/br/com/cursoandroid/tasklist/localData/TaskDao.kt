@@ -1,7 +1,7 @@
 package br.com.cursoandroid.tasklist.localData
 
 import androidx.room.*
-import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.model.dataclass.Task
 
 @Dao
 interface TaskDao {

@@ -1,4 +1,4 @@
-package br.com.cursoandroid.tasklist.model
+package br.com.cursoandroid.tasklist.model.dataclass
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

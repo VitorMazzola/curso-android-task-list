@@ -1,6 +1,6 @@
-package br.com.cursoandroid.tasklist.presentation
+package br.com.cursoandroid.tasklist.view.list
 
-import br.com.cursoandroid.tasklist.model.Task
+import br.com.cursoandroid.tasklist.model.dataclass.Task
 
 interface TaskListener {
     fun onTaskClicked(task: Task, position: Int) {}
