@@ -6,4 +6,5 @@ interface TaskListener {
     fun onTaskClicked(task: Task, position: Int) {}
     fun onTaskDeleteClicked(task: Task) {}
     fun onCheckboxClicked(task: Task, isChecked: Boolean) {}
+    fun onEditTaskClicked(taskId: Int) {}
 }

@@ -16,4 +16,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks")
     fun getAllTasks(): MutableList<Task>
+
+    @Query("SELECT * FROM tasks WHERE id == :taskId")
+    fun getTaskById(taskId: Int): Task
 }

@@ -1,10 +1,13 @@
 package br.com.cursoandroid.tasklist.view.list
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -20,6 +23,7 @@ import br.com.cursoandroid.tasklist.model.repository.RepositoryLocal
 import br.com.cursoandroid.tasklist.model.repository.RepositoryRemote
 import br.com.cursoandroid.tasklist.remoteData.ApiService
 import br.com.cursoandroid.tasklist.remoteData.IApi
+import br.com.cursoandroid.tasklist.view.update.UpdateTaskActivity
 
 class TaskListActivity: AppCompatActivity(), TaskListener {
 
@@ -89,6 +93,17 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     override fun onTaskDeleteClicked(task: Task) {
         showDialog(task)
+    }
+
+    override fun onEditTaskClicked(taskId: Int) {
+        val intent = UpdateTaskActivity.startActivity(this, taskId)
+        updateLauncher.launch(intent)
+    }
+
+    private val updateLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if(result.resultCode == Activity.RESULT_OK) {
+            viewModel.getTasks(false)
+        }
     }
 
     override fun onCheckboxClicked(task: Task, isChecked: Boolean) {

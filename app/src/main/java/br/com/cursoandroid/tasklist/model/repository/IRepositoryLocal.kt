@@ -8,4 +8,8 @@ interface IRepositoryLocal {
     fun getAllTasks(): List<Task>?
 
     fun deleteTask(task: Task) {}
+
+    fun getTaskById(taskId: Int) : Task?
+
+    fun updateTask(task: Task) {}
 }

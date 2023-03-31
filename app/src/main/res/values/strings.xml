@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TaskList</string>
     <string name="btn_add">ADD</string>
+    <string name="btn_update">Atualizar</string>
 </resources>

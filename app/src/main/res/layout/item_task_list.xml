@@ -56,7 +56,7 @@
             android:textSize="@dimen/font_18"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
+            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
 
         <TextView
             android:id="@+id/tvDescription"
@@ -73,7 +73,7 @@
             android:textSize="@dimen/font_14"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
+            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
 
         <TextView
             android:id="@+id/tvOwner"
@@ -91,7 +91,7 @@
             android:textSize="@dimen/font_14"
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
             app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
+            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
 
         <ImageView
             android:id="@+id/ivDelete"
@@ -102,6 +102,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_edit"
+            android:layout_marginEnd="@dimen/margin_start_edit_text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
 
         <View
             android:id="@+id/divider"

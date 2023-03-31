@@ -67,6 +67,10 @@ class TaskAdapter(
             binding.ivDelete.setOnClickListener {
                 listener.onTaskDeleteClicked(task)
             }
+
+            binding.ivEdit.setOnClickListener {
+                listener.onEditTaskClicked(task.id)
+            }
         }
     }
 }

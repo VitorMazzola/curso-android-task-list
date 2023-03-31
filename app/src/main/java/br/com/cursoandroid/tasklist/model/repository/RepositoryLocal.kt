@@ -16,4 +16,12 @@ class RepositoryLocal(private val taskDatabase: TaskDatabase? = null): IReposito
     override fun deleteTask(task: Task) {
         taskDatabase?.taskDao()?.delete(task)
     }
+
+    override fun getTaskById(taskId: Int): Task? {
+       return taskDatabase?.taskDao()?.getTaskById(taskId)
+    }
+
+    override fun updateTask(task: Task) {
+        taskDatabase?.taskDao()?.update(task)
+    }
 }

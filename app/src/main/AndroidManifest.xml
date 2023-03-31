@@ -26,6 +26,8 @@
 
         <activity android:name=".view.list.TaskListActivity"/>
 
+        <activity android:name=".view.update.UpdateTaskActivity"/>
+
     </application>
 
 </manifest>
