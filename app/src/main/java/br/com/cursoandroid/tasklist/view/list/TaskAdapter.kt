@@ -13,7 +13,8 @@ import br.com.cursoandroid.tasklist.model.dataclass.Task
 class TaskAdapter(
     val context: Context,
     val taskList: MutableList<Task>,
-    val listener: TaskListener
+    val listener: TaskListener,
+    val isFromApi: Boolean = false
 ): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     // Inflar nosso layout e criar nosso ViewHolder
@@ -58,6 +59,7 @@ class TaskAdapter(
                 background = if(task.isChecked) ContextCompat.getColor(context, R.color.teal_700) else ContextCompat.getColor(context,
                     R.color.white
                 )
+                isEditEnabled = !isFromApi
             }
 
             binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
@@ -66,6 +68,12 @@ class TaskAdapter(
 
             binding.ivDelete.setOnClickListener {
                 listener.onTaskDeleteClicked(task)
+            }
+
+            if(isFromApi) {
+                binding.taskView.setOnClickListener {
+                    listener.onTaskClicked(task.id)
+                }
             }
 
             binding.ivEdit.setOnClickListener {

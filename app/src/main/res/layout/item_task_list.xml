@@ -20,6 +20,10 @@
         <variable
             name="background"
             type="Integer" />
+
+        <variable
+            name="isEditEnabled"
+            type="Boolean" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerView"
@@ -40,58 +44,59 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvTitle"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/taskView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{taskTitle}"
-            tools:text="Titulo"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textStyle="bold"
-            android:textColor="@color/orange"
             android:layout_marginStart="@dimen/size_24"
             android:layout_marginEnd="@dimen/size_24"
-            android:layout_marginTop="@dimen/margin_top_task_list"
-            android:textSize="@dimen/font_18"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
+            app:layout_constraintEnd_toStartOf="@id/ivEdit"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{taskDescription}"
-            tools:text="Descricao"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:layout_marginStart="@dimen/size_24"
-            android:layout_marginEnd="@dimen/size_24"
-            android:layout_marginTop="@dimen/minimum_top"
-            android:textSize="@dimen/font_14"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-            app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{taskTitle}"
+                tools:text="Titulo"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/font_18"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvOwner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{taskOwner}"
-            tools:text="Dono task"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="@dimen/size_24"
-            android:layout_marginEnd="@dimen/size_24"
-            android:layout_marginTop="@dimen/minimum_top"
-            android:textSize="@dimen/font_14"
-            app:layout_constraintTop_toBottomOf="@id/tvDescription"
-            app:layout_constraintStart_toEndOf="@id/checkBox"
-            app:layout_constraintEnd_toStartOf="@id/ivEdit"/>
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{taskDescription}"
+                tools:text="Descricao"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:layout_marginTop="@dimen/minimum_top"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+
+            <TextView
+                android:id="@+id/tvOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{taskOwner}"
+                tools:text="Dono task"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/minimum_top"
+                android:textSize="@dimen/font_14"
+                app:layout_constraintTop_toBottomOf="@id/tvDescription"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/ivDelete"
@@ -109,6 +114,8 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_edit"
             android:layout_marginEnd="@dimen/margin_start_edit_text"
+            app:visibleIf="@{isEditEnabled}"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/ivDelete"/>
@@ -119,7 +126,7 @@
             android:layout_height="1dp"
             android:background="@color/black"
             android:layout_marginTop="@dimen/margin_top_task_list"
-            app:layout_constraintTop_toBottomOf="@id/tvOwner"/>
+            app:layout_constraintTop_toBottomOf="@id/taskView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -23,6 +23,7 @@ import br.com.cursoandroid.tasklist.model.repository.RepositoryLocal
 import br.com.cursoandroid.tasklist.model.repository.RepositoryRemote
 import br.com.cursoandroid.tasklist.remoteData.ApiService
 import br.com.cursoandroid.tasklist.remoteData.IApi
+import br.com.cursoandroid.tasklist.view.detail.TaskDetailActivity
 import br.com.cursoandroid.tasklist.view.update.UpdateTaskActivity
 
 class TaskListActivity: AppCompatActivity(), TaskListener {
@@ -35,6 +36,8 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
     private lateinit var viewModel: TaskListViewModel
 
     private var taskDatabase: TaskDatabase? = null
+
+    private val isFromApi: Boolean by lazy { intent.extras?.getBoolean(IS_FROM_API) ?: false }
 
     // Metodo do ciclo de vida da activity (onde é criado e setado o layout definido)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,8 +52,6 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
                 ) as T
             }
         })[TaskListViewModel::class.java]
-
-        val isFromApi = intent.extras?.getBoolean(IS_FROM_API) ?: false
 
         viewModel.getTasks(isFromApi)
 
@@ -81,14 +82,14 @@ class TaskListActivity: AppCompatActivity(), TaskListener {
 
     // Método para instanciar seu adapter e configurar seu recyclerView (Lista)
     private fun configureRecyclerView(taskList: MutableList<Task>) {
-        adapter = TaskAdapter(this, taskList,this) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
+        adapter = TaskAdapter(this, taskList,this, isFromApi) // O adapter recebe um listener que no caso foi implementado pela Acitvity, por isso o uso do this
         binding.recyclerTasks.adapter = adapter
         binding.recyclerTasks.layoutManager = LinearLayoutManager(this)
     }
 
     // Implementação do método da interface TaskListener implementada
-    override fun onTaskClicked(task: Task, position: Int) {
-        showDialog(task)
+    override fun onTaskClicked(taskId: Int) {
+        TaskDetailActivity.startActivity(this, taskId)
     }
 
     override fun onTaskDeleteClicked(task: Task) {

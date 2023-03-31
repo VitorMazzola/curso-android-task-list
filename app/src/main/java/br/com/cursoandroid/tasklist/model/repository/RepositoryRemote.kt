@@ -1,6 +1,7 @@
 package br.com.cursoandroid.tasklist.model.repository
 
 import br.com.cursoandroid.tasklist.model.dataclass.Task
+import br.com.cursoandroid.tasklist.model.dataclass.TaskDetail
 import br.com.cursoandroid.tasklist.remoteData.IApi
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,4 +34,30 @@ class RepositoryRemote(val api: IApi) : IRepositoryRemote {
         })
     }
 
+    override fun getTaskById(taskId: Int, isLoading: (Boolean) -> Unit, isSuccess: (TaskDetail?) -> Unit, isError: () -> Unit) {
+        isLoading.invoke(true)
+        val call = api.getTaskById(taskId)
+        call.enqueue(object : Callback<TaskDetail> {
+            override fun onResponse(call: Call<TaskDetail>, response: Response<TaskDetail>) {
+                when (response.code()) {
+                    in 200..202 -> {
+                        isSuccess.invoke(response.body())
+                    }
+                    204 -> {
+                        isSuccess.invoke(null)
+                    }
+                    else -> {
+                        isError.invoke()
+                    }
+                }
+                isLoading.invoke(false)
+            }
+
+            override fun onFailure(call: Call<TaskDetail>, t: Throwable) {
+                isError.invoke()
+                isLoading.invoke(false)
+            }
+
+        })
+    }
 }

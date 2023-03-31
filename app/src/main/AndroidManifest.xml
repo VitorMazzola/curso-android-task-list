@@ -28,6 +28,8 @@
 
         <activity android:name=".view.update.UpdateTaskActivity"/>
 
+        <activity android:name=".view.detail.TaskDetailActivity"/>
+
     </application>
 
 </manifest>
